@@ -1,10 +1,18 @@
 import java.io.File;
+import java.util.Arrays;
 
 public class Application {
 
     public static void main(String[] args) {
 //        (new java.Application()).rename("./src/com/leetcode");
-        System.out.println("Hello World!!");
+//        System.out.println("Hello World!!");
+        String data = "[]";
+        String s = data.substring(1, data.length() - 1);
+        System.out.println(s);
+        System.out.println(s.length() == 0);
+        String[] split = "".split(",");
+        System.out.println(split.length);
+        System.out.println(Arrays.toString(split));
     }
 
     private void rename(String path) {
