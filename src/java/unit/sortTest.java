@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class sortTest {
     @Test
     public void SortTester() {
-        int size = 100;
+        int size = 10;
         boolean success = true;
         for (int testCount = 0; testCount < 1000; testCount++) {
             int[] arr = new int[size];
@@ -16,14 +16,49 @@ public class sortTest {
                 arr[i] = (int) (Math.random() * size * size);
             }
             int[] arr1 = Arrays.copyOf(arr, arr.length);
-            quickSort(arr1);
-
+            if (testCount % 3 == 0)
+                heapSort(arr1);
+            if (testCount % 3 == 1)
+                mergeSort(arr1);
+            if (testCount % 3 == 2)
+                quickSort(arr1);
             int[] arr2 = Arrays.copyOf(arr, arr.length);
             Arrays.sort(arr2);
-
             Assert.assertArrayEquals(arr1, arr2);
         }
     }
+
+    private void heapSort(int[] arr) {
+        for (int i = arr.length / 2 + 1; i >= 0; i--) {
+            adjust(arr, arr.length - 1, i);
+        }
+        for (int i = arr.length - 1; i > 0; i--) {
+            swap(arr, 0, i);
+            adjust(arr, i - 1, 0);
+        }
+    }
+
+    private void adjust(int[] arr, int length, int idx) {
+        int left = idx * 2 + 1;
+        int right = idx * 2 + 2;
+        if (right <= length) {
+            int maxIdx = idx;
+            if (arr[left] > arr[maxIdx])
+                maxIdx = left;
+            if (arr[right] > arr[maxIdx])
+                maxIdx = right;
+            if (idx != maxIdx) {
+                swap(arr, idx, maxIdx);
+                adjust(arr, length, maxIdx);
+            }
+        } else if (left <= length) {
+            if (arr[left] > arr[idx]) {
+                swap(arr, left, idx);
+                adjust(arr, length, left);
+            }
+        }
+    }
+
 
     private void mergeSort(int[] arr) {
         mergeSort(arr, 0, arr.length - 1);
