@@ -1,3 +1,7 @@
+import com.leetcode.TreeNode;
+import com.leetcode.lcp.lcp_34;
+import unit.treeTest;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -6,13 +10,11 @@ public class Application {
     public static void main(String[] args) {
 //        (new java.Application()).rename("./src/com/leetcode");
 //        System.out.println("Hello World!!");
-        String data = "[]";
-        String s = data.substring(1, data.length() - 1);
-        System.out.println(s);
-        System.out.println(s.length() == 0);
-        String[] split = "".split(",");
-        System.out.println(split.length);
-        System.out.println(Arrays.toString(split));
+
+        TreeNode root = treeTest.stringToTreeNode("[4,1,3,9,null,null,2]");
+        lcp_34 l = new lcp_34();
+        int max = l.maxValue(root, 2);
+        System.out.println(max);
     }
 
     private void rename(String path) {
