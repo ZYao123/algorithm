@@ -9,21 +9,21 @@ public class Solution_51 {
 
     public List<List<String>> solveNQueens(int n) {
         res = new ArrayList<>();
-        boolean[][] cache = new boolean[n][n];
-        HashSet<Integer> set1 = new HashSet<>();
-        HashSet<Integer> set2 = new HashSet<>();
-        boolean[] check = new boolean[n];
-        helper(cache, set1, set2, check, 0);
+        int[] cache = new int[n];
+        boolean[] c = new boolean[n];
+        boolean[] c1 = new boolean[n * 2];
+        boolean[] c2 = new boolean[n * 2];
+        helper(cache, c, c1, c2, 0);
         return res;
     }
 
-    private void helper(boolean[][] cache, HashSet<Integer> set1, HashSet<Integer> set2, boolean[] check, int n) {
-        if (n == cache.length) {
+    private void helper(int[] cache, boolean[] c, boolean[] c1, boolean[] c2, int k) {
+        if (k == cache.length) {
             List<String> cur = new ArrayList<>();
             StringBuilder str = new StringBuilder();
-            for (boolean[] bs : cache) {
-                for (boolean b : bs) {
-                    str.append(b ? 'Q' : '.');
+            for (int idx : cache) {
+                for (int i = 0; i < cache.length; i++) {
+                    str.append(i == idx ? 'Q' : '.');
                 }
                 cur.add(str.toString());
                 str.setLength(0);
@@ -31,21 +31,18 @@ public class Solution_51 {
             res.add(cur);
             return;
         }
-
         for (int i = 0; i < cache.length; i++) {
-            if (set1.contains(n + i) || set2.contains(n - i))
+            if (c[i] || c1[k + i] || c2[k - i + cache.length])
                 continue;
-            if (check[i])
-                continue;
-            cache[n][i] = true;
-            check[i] = true;
-            set1.add(n + i);
-            set2.add(n - i);
-            helper(cache, set1, set2, check, n + 1);
-            cache[n][i] = false;
-            check[i] = false;
-            set1.remove(n + i);
-            set2.remove(n - i);
+            c[i] = true;
+            c1[k + i] = true;
+            c2[k - i + cache.length] = true;
+            cache[k] = i;
+            helper(cache, c, c1, c2, k + 1);
+            c[i] = false;
+            c1[k + i] = false;
+            c2[k - i + cache.length] = false;
+            cache[k] = -1;
         }
     }
 }
