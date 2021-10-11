@@ -1,48 +1,54 @@
 package com.leetcode;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 public class Solution_51 {
-    List<List<String>> res;
-
-    public List<List<String>> solveNQueens(int n) {
-        res = new ArrayList<>();
-        int[] cache = new int[n];
-        boolean[] c = new boolean[n];
-        boolean[] c1 = new boolean[n * 2];
-        boolean[] c2 = new boolean[n * 2];
-        helper(cache, c, c1, c2, 0);
-        return res;
+    @Test
+    public void tester() {
+        long s = System.currentTimeMillis();
+        List<List<String>> lists = (new Solution_51()).solveNQueens(4);
+        System.out.println(System.currentTimeMillis() - s);
+        System.out.println(lists.size());
     }
 
-    private void helper(int[] cache, boolean[] c, boolean[] c1, boolean[] c2, int k) {
-        if (k == cache.length) {
-            List<String> cur = new ArrayList<>();
-            StringBuilder str = new StringBuilder();
-            for (int idx : cache) {
-                for (int i = 0; i < cache.length; i++) {
-                    str.append(i == idx ? 'Q' : '.');
-                }
-                cur.add(str.toString());
-                str.setLength(0);
+    public List<List<String>> solveNQueens(int n) {
+        int[] queens = new int[n];
+        Arrays.fill(queens, -1);
+        List<List<String>> solutions = new ArrayList<List<String>>();
+        solve(solutions, queens, n, 0, 0, 0, 0);
+        return solutions;
+    }
+
+    public void solve(List<List<String>> solutions, int[] queens, int n, int row, int columns, int diagonals1, int diagonals2) {
+        if (row == n) {
+            List<String> board = generateBoard(queens, n);
+            solutions.add(board);
+        } else {
+            int availablePositions = ((1 << n) - 1) & (~(columns | diagonals1 | diagonals2));
+            while (availablePositions != 0) {
+                int position = availablePositions & (-availablePositions);
+                availablePositions = availablePositions & (availablePositions - 1);
+                int column = Integer.bitCount(position - 1);
+                queens[row] = column;
+                solve(solutions, queens, n, row + 1, columns | position, (diagonals1 | position) << 1, (diagonals2 | position) >> 1);
+                queens[row] = -1;
             }
-            res.add(cur);
-            return;
         }
-        for (int i = 0; i < cache.length; i++) {
-            if (c[i] || c1[k + i] || c2[k - i + cache.length])
-                continue;
-            c[i] = true;
-            c1[k + i] = true;
-            c2[k - i + cache.length] = true;
-            cache[k] = i;
-            helper(cache, c, c1, c2, k + 1);
-            c[i] = false;
-            c1[k + i] = false;
-            c2[k - i + cache.length] = false;
-            cache[k] = -1;
+    }
+
+    public List<String> generateBoard(int[] queens, int n) {
+        List<String> board = new ArrayList<String>();
+        for (int i = 0; i < n; i++) {
+            char[] row = new char[n];
+            Arrays.fill(row, '.');
+            row[queens[i]] = 'Q';
+            board.add(new String(row));
         }
+        return board;
     }
 }
