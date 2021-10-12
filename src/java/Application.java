@@ -1,5 +1,7 @@
 import com.leetcode.TreeNode;
 import com.leetcode.lcp.lcp_34;
+import com.util.graph.Node;
+import com.util.graph.NodeHeap;
 import unit.treeTest;
 
 import java.io.File;
@@ -11,10 +13,21 @@ public class Application {
 //        (new java.Application()).rename("./src/com/leetcode");
 //        System.out.println("Hello World!!");
 
-        TreeNode root = treeTest.stringToTreeNode("[4,1,3,9,null,null,2]");
-        lcp_34 l = new lcp_34();
-        int max = l.maxValue(root, 2);
-        System.out.println(max);
+//        TreeNode root = treeTest.stringToTreeNode("[4,1,3,9,null,null,2]");
+//        lcp_34 l = new lcp_34();
+//        int max = l.maxValue(root, 2);
+//        System.out.println(max);
+        NodeHeap heap = new NodeHeap();
+        Node t = new Node(1);
+        heap.offer(t);
+        heap.offer(new Node(5));
+        heap.offer(new Node(3));
+        heap.setValue(t, 10);
+        System.out.println(heap.peek().value);
+        System.out.println(heap.poll().value);
+        System.out.println(heap.poll().value);
+        System.out.println(heap.poll().value);
+        System.out.println(heap.size());
     }
 
     private void rename(String path) {

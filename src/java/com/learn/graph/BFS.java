@@ -1,4 +1,4 @@
-package com.graph;
+package com.learn.graph;
 
 import java.util.HashSet;
 import java.util.LinkedList;

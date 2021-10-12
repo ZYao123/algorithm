@@ -1,4 +1,5 @@
-package com.graph;
+package com.util.graph;
+
 
 public class Edge {
     public int weight;

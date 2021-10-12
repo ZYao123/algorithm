@@ -1,4 +1,4 @@
-package com.graph;
+package com.learn.graph;
 
 public class GraphGenerator {
 
