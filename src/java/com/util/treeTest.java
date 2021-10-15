@@ -1,4 +1,4 @@
-package unit;
+package com.util;
 
 import com.leetcode.TreeNode;
 import org.junit.Test;

@@ -1,33 +1,10 @@
-import com.leetcode.TreeNode;
-import com.leetcode.lcp.lcp_34;
-import com.util.graph.Node;
-import com.util.graph.NodeHeap;
-import unit.treeTest;
-
 import java.io.File;
-import java.util.Arrays;
 
 public class Application {
 
     public static void main(String[] args) {
-//        (new java.Application()).rename("./src/com/leetcode");
-//        System.out.println("Hello World!!");
-
-//        TreeNode root = treeTest.stringToTreeNode("[4,1,3,9,null,null,2]");
-//        lcp_34 l = new lcp_34();
-//        int max = l.maxValue(root, 2);
-//        System.out.println(max);
-        NodeHeap heap = new NodeHeap();
-        Node t = new Node(1);
-        heap.offer(t);
-        heap.offer(new Node(5));
-        heap.offer(new Node(3));
-        heap.setValue(t, 10);
-        System.out.println(heap.peek().value);
-        System.out.println(heap.poll().value);
-        System.out.println(heap.poll().value);
-        System.out.println(heap.poll().value);
-        System.out.println(heap.size());
+//        (new Application()).rename("./src/com/leetcode");
+        System.out.println("Hello World!!");
     }
 
     private void rename(String path) {
@@ -39,7 +16,7 @@ public class Application {
                     if (!f.isDirectory()) {
 //                        System.out.println("文件:" + f.getAbsolutePath());
 //                        System.out.println("文件名:" + f.getName());
-                        String newFileName = helper(f.getName());
+                        String newFileName = createNewName(f.getName());
                         System.out.println(newFileName);
                         f.renameTo(new File(newFileName));
                     }
@@ -50,7 +27,7 @@ public class Application {
         }
     }
 
-    private String helper(String fileName) {
+    private String createNewName(String fileName) {
         String prefix = "Solution";
         String substring = fileName.substring(prefix.length());
         String[] split = substring.split("\\.");
