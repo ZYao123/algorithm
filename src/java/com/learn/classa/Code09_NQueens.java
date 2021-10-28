@@ -1,4 +1,4 @@
-package com.learn.class08;
+package com.learn.classa;
 
 public class Code09_NQueens {
 

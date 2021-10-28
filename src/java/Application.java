@@ -1,3 +1,5 @@
+import com.baidu.main;
+
 import java.io.File;
 
 public class Application {
@@ -5,6 +7,10 @@ public class Application {
     public static void main(String[] args) {
 //        (new Application()).rename("./src/com/leetcode");
         System.out.println("Hello World!!");
+        main run = new main();
+        run.run();
+        StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.toString().trim();
     }
 
     private void rename(String path) {
