@@ -54,6 +54,38 @@ public class Solution_743 {
 
     public int networkDelayTime2(int[][] times, int n, int k) {
         final int INF = Integer.MAX_VALUE / 2;
+        int[][] g = new int[n][n];
+        for (int i = 0; i < n; ++i) {
+            Arrays.fill(g[i], INF);
+        }
+        for (int[] t : times) {
+            int x = t[0] - 1, y = t[1] - 1;
+            g[x][y] = t[2];
+        }
+
+        int[] dist = new int[n];
+        Arrays.fill(dist, INF);
+        dist[k - 1] = 0;
+        boolean[] used = new boolean[n];
+        for (int i = 0; i < n; ++i) {
+            int x = -1;
+            for (int y = 0; y < n; ++y) {
+                if (!used[y] && (x == -1 || dist[y] < dist[x])) {
+                    x = y;
+                }
+            }
+            used[x] = true;
+            for (int y = 0; y < n; ++y) {
+                dist[y] = Math.min(dist[y], dist[x] + g[x][y]);
+            }
+        }
+
+        int ans = Arrays.stream(dist).max().getAsInt();
+        return ans == INF ? -1 : ans;
+    }
+
+    public int networkDelayTime3(int[][] times, int n, int k) {
+        final int INF = Integer.MAX_VALUE / 2;
         List<int[]>[] g = new List[n];
         for (int i = 0; i < n; ++i) {
             g[i] = new ArrayList<>();
@@ -88,6 +120,40 @@ public class Solution_743 {
         return ans == INF ? -1 : ans;
     }
 
+
+    public int networkDelayTime4(int[][] times, int n, int k) {
+        List<Map<Integer, Integer>> cache = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            cache.add(new HashMap<>());
+        }
+        for (int[] time : times) {
+            Map<Integer, Integer> map = cache.get(time[0] - 1);
+            map.put(time[1], time[2]);
+        }
+        boolean[] used = new boolean[n];
+        int[] dist = new int[n];
+        Arrays.fill(dist, -1);
+        dist[k - 1] = 0;
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        queue.add(new int[]{k, 0});
+        while (!queue.isEmpty()) {
+            int[] poll = queue.poll();
+            if (used[poll[0] - 1])
+                continue;
+            used[poll[0] - 1] = true;
+            Map<Integer, Integer> map = cache.get(poll[0] - 1);
+            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                int dis = entry.getValue() + poll[1];
+                int key = entry.getKey();
+                if (dist[key - 1] == -1 || dis < dist[key - 1]) {
+                    dist[key - 1] = dis;
+                    queue.add(new int[]{key, dis});
+                }
+            }
+        }
+        return Arrays.stream(dist).max().getAsInt();
+    }
+
     @Test
     public void test() {
         int i = 0;
@@ -100,7 +166,7 @@ public class Solution_743 {
         int[][] arr = {{4, 2, 76}, {1, 3, 79}, {3, 1, 81}, {4, 3, 30}, {2, 1, 47}, {1, 5, 61}, {1, 4, 99},
                 {3, 4, 68}, {3, 5, 46}, {4, 1, 6}, {5, 4, 7}, {5, 3, 44}, {4, 5, 19}, {2, 3, 13}, {3, 2, 18},
                 {1, 2, 0}, {5, 1, 25}, {2, 5, 58}, {2, 4, 77}, {5, 2, 74}};
-        i = networkDelayTime2(arr, 5, 3);
+        i = networkDelayTime4(arr, 5, 3);
         Assert.assertEquals(i, 59);
     }
 }

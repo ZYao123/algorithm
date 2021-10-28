@@ -16,12 +16,12 @@ public class sortTest {
                 arr[i] = (int) (Math.random() * size * size);
             }
             int[] arr1 = Arrays.copyOf(arr, arr.length);
-            if (testCount % 3 == 0)
-                heapSort(arr1);
-            if (testCount % 3 == 1)
-                mergeSort(arr1);
-            if (testCount % 3 == 2)
-                quickSort(arr1);
+//            if (testCount % 3 == 0)
+//                heapSort(arr1);
+//            if (testCount % 3 == 1)
+//                mergeSort(arr1);
+//            if (testCount % 3 == 2)
+            quickSort(arr1);
             int[] arr2 = Arrays.copyOf(arr, arr.length);
             Arrays.sort(arr2);
             Assert.assertArrayEquals(arr1, arr2);
@@ -92,9 +92,9 @@ public class sortTest {
     }
 
     private void quickSort(int[] arr) {
-        quickSort(arr, 0, arr.length - 1);
+        hoareQuickSort(arr, 0, arr.length - 1);
     }
-
+    //  挖坑
     private void quickSort(int[] arr, int begin, int end) {
         if (begin >= end)
             return;
@@ -112,10 +112,31 @@ public class sortTest {
         quickSort(arr, begin, left - 1);
         quickSort(arr, left + 1, end);
     }
+    //  交换
+    private void hoareQuickSort(int[] arr, int left, int right) {
+        if (left >= right) return;
+        int l = left;
+        int r = right;
+        int key = arr[left];
+        while (l < r) {
+            while (l < r && arr[r] >= key) r--;
+            while (l < r && arr[l] <= key) l++;
+            if (l < r) swap(arr, l, r);
+        }
+        swap(arr, r, left);
+        hoareQuickSort(arr, left, l - 1);
+        hoareQuickSort(arr, l + 1, right);
+    }
 
     private void swap(int[] arr, int a, int b) {
-        arr[a] = arr[a] ^ arr[b];
-        arr[b] = arr[a] ^ arr[b];
-        arr[a] = arr[a] ^ arr[b];
+        int t = arr[a];
+        arr[a] = arr[b];
+        arr[b] = t;
     }
+
+//    private void swap(int[] arr, int a, int b) {
+//        arr[a] = arr[a] ^ arr[b];
+//        arr[b] = arr[a] ^ arr[b];
+//        arr[a] = arr[a] ^ arr[b];
+//    }
 }
