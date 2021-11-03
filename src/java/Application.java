@@ -1,12 +1,21 @@
 import com.baidu.main;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Application {
 
     public static void main(String[] args) {
 //        (new Application()).rename("./src/com/leetcode");
-        System.out.println("Hello World!!");
+//        System.out.println("Hello World!!");
+
+        String a = "ABACABAD";
+        String b = "BBC ABACABACABAD ABCDABDE";
+        System.out.println("next =" + Arrays.toString(a.toCharArray()));
+        int result = kmp(b, a);
+
+        //打印结果：和字符串获得匹配的位置
+        System.out.println("resultPosion:" + result);
         main run = new main();
         run.run();
         StringBuilder stringBuilder = new StringBuilder();
@@ -43,5 +52,47 @@ public class Application {
         while (str.charAt(0) == '_')
             str = str.substring(1);
         return prefix + '_' + Integer.parseInt(str) + ".java";
+    }
+
+    /**
+     * KMP 匹配
+     */
+    public static int kmp(String str, String dest) {
+        //1.首先计算出 部分匹配表
+        int[] next = kmpnext(dest);
+
+        System.out.println("next =" + Arrays.toString(next));
+        //2.查找匹配位置
+        for (int i = 0, j = 0; i < str.length(); i++) {
+            while (j > 0 && str.charAt(i) != dest.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (str.charAt(i) == dest.charAt(j)) {
+                j++;
+            }
+            if (j == dest.length()) {
+                return i - j + 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 计算部分匹配表
+     */
+    public static int[] kmpnext(String dest) {
+        int[] next = new int[dest.length()];
+        next[0] = 0;
+
+        for (int i = 1, j = 0; i < dest.length(); i++) {
+            while (j > 0 && dest.charAt(j) != dest.charAt(i)) {
+                j = next[j - 1];
+            }
+            if (dest.charAt(i) == dest.charAt(j)) {
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
     }
 }

@@ -3,7 +3,7 @@ package com.leetcode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Solution282 {
+public class Solution_282 {
     List<String> res = new ArrayList<>();
     char[] chars;
     int t;
